@@ -1,5 +1,5 @@
 const MoveButton = () => {
-    return <div></div>;
+  return <div></div>;
 };
 
 export default MoveButton;
