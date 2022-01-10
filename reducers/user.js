@@ -1,7 +1,7 @@
 const initialState = { // 초기값. 데이터의 구조를 잡는다.
   seq: null,
   id: null,
-  nickname: mirutree,
+  nickname: 'mirutree',
   isLogin: false
 }
 
