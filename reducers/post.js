@@ -3,7 +3,11 @@ const initialState = {
         seq: null,
         title: null,
         contents: null,
-        writer: null
+        writer: null,
+        date: null,
+        category: null,
+        comment_count: null,
+        like: null,
     },
     Comment: [],
     User: [],
