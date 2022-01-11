@@ -1,17 +1,30 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import {useDispatch, useSelector} from "react-redux";
+import {BOARD_ALL_REQUEST} from "../reducers/post";
 
 const BasicBoard = () => {
-  let [contents, setContents] = useState([]);
+  const [contents, setContents] = useState([]);
+  const dispatch = useDispatch();
+  const { post } = useSelector((state) => state.post);
+
   const getPost = async () => {
-    let boardList = await axios.get("http://localhost:3060/post");
-    console.log("boardList", boardList);
-    setContents(boardList.data);
-  }
+    dispatch({
+      type: BOARD_ALL_REQUEST
+    })
+  };
+
   useEffect(() => {
     getPost();
   }, []);
+
+  useEffect(() => {
+    console.log(post);
+    if (post?.data) { //post가 있고 post에 data 있을 때
+      setContents(post.data);
+    }
+  }, [post && post.data]); // post가 변경되면 실행
 
   return (
     <Container>
@@ -22,18 +35,19 @@ const BasicBoard = () => {
         <IconContainer>좋아요</IconContainer>
       </TitleContainer>
       <ContentsContainer>
-          {contents 
-            ? contents.map((item, index) => (
-              <div key={index + item.date}>
+        {contents
+          ? contents.map((item, index) => (
+              <div key={index + item.ins_dttm}>
                 <CategoryContent>{item.category}</CategoryContent>
                 <TitleContent>
                   {item.title}
-                  <span>[{item.comment_count}]</span>
+                  <span>[{item.comments_cnt}]</span>
                 </TitleContent>
-                <IconContent>{item.date}</IconContent>
-                <IconContent>{item.like}</IconContent>
+                <IconContent>{item.ins_dttm}</IconContent>
+                <IconContent>{item.b_like}</IconContent>
               </div>
-          )) : "내용이 없습니다" }
+            ))
+          : "내용이 없습니다."}
       </ContentsContainer>
     </Container>
   );

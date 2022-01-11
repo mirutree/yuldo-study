@@ -3,12 +3,12 @@ import {fork, takeLatest, put,all, call} from "redux-saga/effects";
 import { BOARD_ALL_REQUEST, BOARD_ALL_SUCCESS, BOARD_ALL_FAILURE } from '../reducers/post';
 
 function loadBoardAPI(data) {
-    return axios.delete(`/user/${data}/follow`);
+    return axios.get(`/post`);
 }
 
 function* loadBoard(action) {
     try {
-        const result = yield call(loadBoardAPI, action.data);
+        const result = yield call(loadBoardAPI);
         yield put({
             type: BOARD_ALL_SUCCESS,
             data: result.data,
