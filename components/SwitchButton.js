@@ -4,7 +4,8 @@ import ToggleOff from "../public/images/toggle_off.svg";
 import SearchImg from "../public/images/search.svg";
 
 const SwitchButton = ({
-  Select_size,
+  switch_state,
+  select_size,
   input_size,
   button_size,
   placeholder_text
@@ -17,13 +18,13 @@ const SwitchButton = ({
       </ToogleImage>
     </ToggleContainer>
     <ToggleContainer2>
-      <ToggleText>성인글필터링</ToggleText>
+      <ToggleText>필터링</ToggleText>
       <ToogleImage>
-        <ToggleImgOff onClick={imgclick}/>
+        <ToggleImgOff onClick={imgclick } switch_state={on}/>
       </ToogleImage>
     </ToggleContainer2>
     <SearchContainer>
-      <Select size={Select_size}>
+      <Select size={select_size}>
         <option>제목+내용</option>
       </Select>
       <InputBox placeholder={placeholder_text} size={input_size} />
@@ -69,10 +70,6 @@ const ToggleText = styled.span`
 const ToogleImage = styled.span`
   margin-left: 5px;
 `;
-  
-const imgclick = () => {
-  console.log('클릭');
-};
 
 const Select = styled.select`
   width: ${(props) => (props.size ? props.size : 97)}px;
@@ -108,5 +105,18 @@ const Button = styled.button`
 `;
 
 const BUttonImage = styled(SearchImg)``;
-const ToggleImgOn = styled(ToggleOn)``;
+
+const ToggleImgOn = styled.img.attrs({
+  src: "../images/toggle_on.svg",
+})`
+width: 50px;
+height: 20px;
+`;
+
 const ToggleImgOff = styled(ToggleOff)``;
+
+const imgclick = () => {
+  console.log('클릭');
+  switch_state == 'on' ? switch_state('off') : switch_state('on');
+  console.log(switch_state);
+};

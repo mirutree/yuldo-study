@@ -4,23 +4,48 @@ import WriteImg from "/public/images/write_image.svg";
 import Smile from "/public/images/smile.svg";
 import Pencil from "/public/images/pencil.svg";
 import Close from "/public/images/white_close.svg";
+import { BOARD_WRITE_REQUEST } from "../../reducers/post";
+import { useDispatch, useSelector } from "react-redux";
 
 const BoardWrite = () => {
-  const [contents, setContents] = useState([
-    { title: "", category: "", content: "" },
-  ]);
+  const [contents, setContents] = useState('');
+  const [title, setTitle] = useState('');
+  const [category, setCategory] = useState('H');
+  const dispatch = useDispatch();
+  const { message, isSuccess } = useSelector((state) => state.post);
 
-  const getValue = (e) => {
+  useEffect(() => {
+    if (isSuccess) {
+      alert('글이 등록되었습니다.');
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (message) {
+      alert(message);
+    }
+  }, [message]);
+
+  const getContents = (e) => {
     const { name, value } = e.target;
-    setContents({
-      ...contents,
-      [name]: value,
-    });
+    setContents(value);
   };
+
+  const getTitle = (e) => {
+    const { name, value } = e.target;
+    setTitle(value);
+  };
+
+  const getCategory = (e) => {
+    const { name, value } = e.target;
+    setCategory(value);
+  };
+  
   const save = () => {
-    console.log(
-      `작성내용 : ${contents.title} ${contents.category} ${contents.content}`
-    );
+    dispatch({
+      type: BOARD_WRITE_REQUEST,
+      data: { title, contents, category, writer: 'yulmu' }
+    })
   };
   return (
     <Container>
@@ -32,14 +57,14 @@ const BoardWrite = () => {
       <ContentsContainer>
         <InputTitle
           name="title"
-          onChange={getValue}
+          onChange={getTitle}
           placeholder="제목을 입력해주세요."
         ></InputTitle>
         <SelecetWrap>
-          <SelecetBox name="category" onChange={getValue}>
+          <SelecetBox name="category" onChange={getCategory} defaultValue="H">
             //for loop 으로 변경
-            <option value="humor">유머</option>
-            <option value="issue">이슈</option>
+            <option value="H">유머</option>
+            <option value="I">이슈</option>
           </SelecetBox>
           <div>
             <Smile />
@@ -48,7 +73,7 @@ const BoardWrite = () => {
         </SelecetWrap>
         <TextAreaContents
           name="content"
-          onChange={getValue}
+          onChange={getContents}
           placeholder="내용을 입력해주세요."
         ></TextAreaContents>
         <ButtonWrap>
