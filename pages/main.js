@@ -11,8 +11,7 @@ import GlobalStyle from "../styled";
 
 const Main = () => (
     <SwitchButton 
-        placeholder_text="검색어를 입력해 주세요." 
-        input_size="240">
+        placeholder_text="검색어를 입력해 주세요." >
         
     </SwitchButton>
 );

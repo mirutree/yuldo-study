@@ -1,10 +1,15 @@
 import styled from "styled-components";
-import ToggleOn from "../public/images/toggle_on.svg";
-import ToggleOff from "../public/images/toggle_off.svg";
-import SearchImg from "../public/images/search.svg";
+import ToggleOn from "/public/images/toggle_on.svg";
+import ToggleOff from "/public/images/toggle_off.svg";
+import SearchImg from "/public/images/search.svg";
+
+let switch_state = 'on';
+const imgclick = () => {
+  switch_state == 'on' ? switch_state = 'off' : switch_state = 'on';
+  console.log(switch_state);
+};
 
 const SwitchButton = ({
-  switch_state,
   select_size,
   input_size,
   button_size,
@@ -13,19 +18,22 @@ const SwitchButton = ({
   <Container>
     <ToggleContainer>
       <ToggleText>스티커</ToggleText>
-      <ToogleImage>
-        <ToggleImgOn onClick={imgclick}/>
+      <ToogleImage onClick={imgclick}>
+        {switch_state == 'on' ? <ToggleOn /> : <ToggleOff />}
       </ToogleImage>
     </ToggleContainer>
     <ToggleContainer2>
-      <ToggleText>필터링</ToggleText>
-      <ToogleImage>
-        <ToggleImgOff onClick={imgclick } switch_state={on}/>
+      <ToggleText>성인글 필터링</ToggleText>
+      <ToogleImage onClick={imgclick}>
+        {switch_state == 'on' ? <ToggleOn /> : <ToggleOff />}
       </ToogleImage>
     </ToggleContainer2>
     <SearchContainer>
       <Select size={select_size}>
         <option>제목+내용</option>
+        <option>제목</option>
+        <option>내용</option>
+        <option>태그</option>
       </Select>
       <InputBox placeholder={placeholder_text} size={input_size} />
       <Button size={button_size}>
@@ -67,12 +75,8 @@ const ToggleText = styled.span`
     opacity: 1;
 `;
 
-const ToogleImage = styled.span`
-  margin-left: 5px;
-`;
-
 const Select = styled.select`
-  width: ${(props) => (props.size ? props.size : 97)}px;
+  width: ${(props) => (props.select_size ? props.select_size : 97)}px;
   height: 35px;
   border: 1px solid #d2d2d2;
   font-size: 13px;
@@ -85,7 +89,7 @@ const Select = styled.select`
 `;
 
 const InputBox = styled.input`
-  width: ${(props) => (props.size ? props.size : 240)}px;
+  width: ${(props) => (props.input_size ? props.input_size : 240)}px;
   height: 35px;
   border: 1px solid #d2d2d2;
   font-size: 13px;
@@ -94,7 +98,7 @@ const InputBox = styled.input`
 `;
 
 const Button = styled.button`
-  width: ${(props) => (props.size ? props.size : 78)}px;
+  width: ${(props) => (props.button_size ? props.button_size : 78)}px;
   height: 35px;
   margin-left: 5px;
   border: 1px solid #707070;
@@ -104,19 +108,9 @@ const Button = styled.button`
   }
 `;
 
-const BUttonImage = styled(SearchImg)``;
-
-const ToggleImgOn = styled.img.attrs({
-  src: "../images/toggle_on.svg",
-})`
-width: 50px;
-height: 20px;
+const ToogleImage = styled.span`
+  margin-left: 5px;
 `;
 
-const ToggleImgOff = styled(ToggleOff)``;
+const BUttonImage = styled(SearchImg)``;
 
-const imgclick = () => {
-  console.log('클릭');
-  switch_state == 'on' ? switch_state('off') : switch_state('on');
-  console.log(switch_state);
-};
