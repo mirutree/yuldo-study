@@ -9,7 +9,7 @@ const BasicBoard = () => {
   const dispatch = useDispatch();
   const { post } = useSelector((state) => state.post);
 
-  const getPost = async () => {
+  const getPost = () => {
     dispatch({
       type: BOARD_ALL_REQUEST
     })
@@ -24,7 +24,7 @@ const BasicBoard = () => {
     if (post?.data) { //post가 있고 post에 data 있을 때
       setContents(post.data);
     }
-  }, [post && post.data]); // post가 변경되면 실행
+  }, [post && post.data]); //= [post?.data] post가 변경되면 실행
 
   return (
     <Container>
