@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { COMMENT_WRITE_REQUEST } from "../reducers/comment";
 
-const CommentsBox = () => {
+const ReCommentsBox = ({ seq }) => {
   const [contents, setContent] = useState("");
   const { post } = useSelector((state) => state.post);
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ const CommentsBox = () => {
   const commentSave = () => {
     dispatch({
       type: COMMENT_WRITE_REQUEST,
-      data: { board_seq: post.seq, contents },
+      data: { board_seq: post.seq, contents, comment_seq: seq },
     });
   };
 
@@ -34,7 +34,7 @@ const CommentsBox = () => {
   );
 };
 
-export default CommentsBox;
+export default ReCommentsBox;
 
 const Container = styled.div``;
 

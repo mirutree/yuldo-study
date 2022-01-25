@@ -1,55 +1,77 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import {useDispatch, useSelector} from "react-redux";
-import {BOARD_ALL_REQUEST} from "../reducers/post";
+import { useDispatch, useSelector } from "react-redux";
+import { BOARD_ALL_REQUEST, BOARD_DETAIL_REQUEST } from "../reducers/post";
+import { Oval } from "react-loader-spinner";
+import Router from "next/router";
 
 const BasicBoard = () => {
   const [contents, setContents] = useState([]);
   const dispatch = useDispatch();
-  const { post } = useSelector((state) => state.post);
+  const { Posts, isSuccess, isLoading, post } = useSelector(
+    (state) => state.post
+  );
 
   const getPost = () => {
     dispatch({
-      type: BOARD_ALL_REQUEST
-    })
+      type: BOARD_ALL_REQUEST,
+    });
   };
+
+  const goDetail = (board_seq) => {
+    // 가져온 글 번호
+    dispatch({
+      type: BOARD_DETAIL_REQUEST,
+      data: board_seq,
+    });
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      Router.push("/board/detail");
+    }
+  }, [post]);
 
   useEffect(() => {
     getPost();
   }, []);
 
   useEffect(() => {
-    console.log(post);
-    if (post?.data) { //post가 있고 post에 data 있을 때
-      setContents(post.data);
+    console.log(Posts.data);
+    if (Posts?.data) {
+      //post가 있고 post에 data 있을 때
+      setContents(Posts.data);
     }
-  }, [post && post.data]); //= [post?.data] post가 변경되면 실행
+  }, [Posts && Posts.data]); // post가 변경되면 실행
 
   return (
-    <Container>
-      <TitleContainer>
-        <Category>구분</Category>
-        <TextTitle>글제목</TextTitle>
-        <IconContainer>작성일</IconContainer>
-        <IconContainer>좋아요</IconContainer>
-      </TitleContainer>
-      <ContentsContainer>
-        {contents
-          ? contents.map((item, index) => (
-              <div key={index + item.ins_dttm}>
-                <CategoryContent>{item.category}</CategoryContent>
-                <TitleContent>
-                  {item.title}
-                  <span>[{item.comments_cnt}]</span>
-                </TitleContent>
-                <IconContent>{item.ins_dttm}</IconContent>
-                <IconContent>{item.b_like}</IconContent>
-              </div>
-            ))
-          : "내용이 없습니다."}
-      </ContentsContainer>
-    </Container>
+    <>
+      {isLoading && <Spinner color="#00BFFF" height={80} width={80} />}
+      <Container>
+        <TitleContainer>
+          <Category>구분</Category>
+          <TextTitle>글제목</TextTitle>
+          <IconContainer>작성일</IconContainer>
+          <IconContainer>좋아요</IconContainer>
+        </TitleContainer>
+        <ContentsContainer>
+          {contents
+            ? contents.map((item, index) => (
+                <div key={index + item.ins_dttm}>
+                  <CategoryContent>{item.category}</CategoryContent>
+                  <TitleContent onClick={() => goDetail(item.seq)}>
+                    {item.title}
+                    <span>[{item.comments_cnt}]</span>
+                  </TitleContent>
+                  <IconContent>{item.ins_dttm}</IconContent>
+                  <IconContent>{item.b_like}</IconContent>
+                </div>
+              ))
+            : "내용이 없습니다."}
+        </ContentsContainer>
+      </Container>
+    </>
   );
 };
 
@@ -86,7 +108,9 @@ const CategoryContent = styled.div`
 `;
 
 const TitleContent = styled.div`
-  width  : 100%;
+  width: 100%;
+  margin: 10px;
+  cursor: pointer;
   span {
     font-size: 13px;
     color: #ff4343;
@@ -100,11 +124,15 @@ const IconContent = styled.div`
   justify-content: center;
 `;
 
-
 const ContentsContainer = styled.div`
   div {
     display: flex;
   }
 `;
 
-
+const Spinner = styled(Oval)`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

@@ -5,67 +5,28 @@ import LinkImg from "/public/images/link.svg";
 import SaveImg from "/public/images/save.svg";
 import ReportImg from "/public/images/report.svg";
 import FunctionImg from "/public/images/function.svg";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import BoardList from "./list";
-import BasicBoard from "../../components/BasicBoard";
-import CommentsBox from "../../components/CommentsBox";
-import {
-  COMMENT_LOAD_REQUEST,
-  COMMENT_WRITE_REQUEST,
-} from "../../reducers/comment";
-import ReCommentsBox from "../../components/ReCommentsBox";
 
 const BasicBoardContent = () => {
-  const [rereplyWrite, setReplyWrite] = useState(null);
-  const { post } = useSelector((state) => state.post);
-  const { comments, commentLoading } = useSelector((state) => state.comment);
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    //let seq = "zena";
-    //let year = new Date().getFullYear(); // 년도
-    //let month = new Date().getMonth() + 1;
-    //let day = new Date().getDate();
-    //console.log(day);
-    //let test = seq + year + month + day;
-    //console.log(test.toString().charCodeAt());
-    //#endregion
-    dispatch({
-      type: COMMENT_LOAD_REQUEST,
-      data: post.seq,
-    });
-  }, []);
-
-  useEffect(() => {
-    if (comments) {
-      console.log(comments);
-    }
-  }, [commentLoading]);
-  const rereply = (comment_seq) => {
-    setReplyWrite(true);
-  };
-
   return (
     <Container>
       <TitleContainer>
-        <Category>{post.category}</Category>
-        <TextTitle>{post.title}</TextTitle>
+        <Category>유머</Category>
+        <TextTitle>오늘 전 커뮤 온에어 난리난 금쪽같은 내새끼</TextTitle>
         <TitleButton>
           <FunctionImg />
         </TitleButton>
       </TitleContainer>
       <TitleBottomContainer>
-        <Writer>{post.writer}</Writer>
-        <WriteDate>{post.ins_dttm}</WriteDate>
+        <Writer>익명</Writer>
+        <WriteDate>2021.11.19. 11:52</WriteDate>
         <TitleBottomButtons>
           <CommentCount>
             <CommentImg />
-            댓글 <span>{post.comment_cnt}</span>
+            댓글 <span>25</span>
           </CommentCount>
           <LikeCount>
             <LikeImg />
-            좋아요 <span>{post.b_like}</span>
+            좋아요 <span>23</span>
           </LikeCount>
           <CopyURL>
             <LinkImg />
@@ -82,35 +43,27 @@ const BasicBoardContent = () => {
         </TitleBottomButtons>
       </TitleBottomContainer>
       <ContentsContainer>
-        <Contents>{post.contents}</Contents>
+        <Contents>
+          남편이랑 시엄마가 엄마한테 가스라이팅 오져서 애가 그걸보고 엄마한테
+          과잉반응함 손닿는 것도 극혐함
+          <br /> 두번 유산 후 힘들게 금쪽이 얻었는데 애가 엄마 거부. 알고보니
+          아빠랑 시어머니가 애 엄하게 혼내놓고 대놓고 엄마 왕따시킴. 무섭던
+          금쪽이는 강자가 아빠, 할머니인거 깨닫고 엄마 싫어하는 척했던거고 아빠
+          시어머니는 엄마탓만 하며 시어머니가 금쪽이 신청
+        </Contents>
       </ContentsContainer>
       <ContentsBottomContainer>
         <LikeButton>
           <LikeImg />
           좋아요
-          <span>{post.b_like}</span>
+          <span>23</span>
         </LikeButton>
         <DisLikeButton>
           <LikeImg />
           별로요
-          <span>{post.b_dislike}</span>
+          <span>0</span>
         </DisLikeButton>
       </ContentsBottomContainer>
-      {comments && (
-        <CommentContainer>
-          {comments.map((val, index) => (
-            <div key={index + val.ins_dttm}>
-              <NickNameContainer>
-                <span onClick={() => rereply(val.seq)}>{val.writer}</span>&nbsp;
-                <span>{val.ins_dttm}</span>
-              </NickNameContainer>
-              <CommentContentContainer>{val.contents}</CommentContentContainer>
-              {rereplyWrite && <ReCommentsBox seq={val.seq} />}
-            </div>
-          ))}
-          <CommentsBox />
-        </CommentContainer>
-      )}
     </Container>
   );
 };
@@ -217,6 +170,3 @@ const LikeButton = styled.button`
 const DisLikeButton = styled.button`
   border-left: none;
 `;
-const CommentContainer = styled.div``;
-const NickNameContainer = styled.div``;
-const CommentContentContainer = styled.div``;

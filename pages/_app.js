@@ -1,6 +1,7 @@
 import propTypes from "prop-types";
 import Head from "next/head";
 import wrapper from "../store/configureStore";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 const App = ({ Component }) => {
   return (
