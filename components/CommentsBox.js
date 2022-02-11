@@ -20,11 +20,13 @@ const CommentsBox = () => {
       type: COMMENT_WRITE_REQUEST,
       data: { board_seq: post.seq, contents },
     });
+    setContent("");
   };
 
   return (
     <Container>
       <InputBox
+        value={contents}
         onChange={getContents}
         type="text"
         placeholder="댓글을 입력해주세요"

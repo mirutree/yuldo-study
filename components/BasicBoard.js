@@ -25,6 +25,7 @@ const BasicBoard = () => {
       type: BOARD_DETAIL_REQUEST,
       data: board_seq,
     });
+    localStorage.setItem("board_seq", board_seq);
   };
 
   useEffect(() => {
@@ -62,6 +63,7 @@ const BasicBoard = () => {
                   <CategoryContent>{item.category}</CategoryContent>
                   <TitleContent onClick={() => goDetail(item.seq)}>
                     {item.title}
+                    {/* 댓글 달 때 코멘트 카운트 올리기 */}
                     <span>[{item.comments_cnt}]</span>
                   </TitleContent>
                   <IconContent>{item.ins_dttm}</IconContent>

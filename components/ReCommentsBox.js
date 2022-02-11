@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { COMMENT_WRITE_REQUEST } from "../reducers/comment";
+import {
+  COMMENT_WRITE_REQUEST,
+  RECOMMENT_WRITE_REQUEST,
+} from "../reducers/comment";
 
-const ReCommentsBox = ({ seq }) => {
+const ReCommentsBox = ({ seq, isOpen }) => {
   const [contents, setContent] = useState("");
   const { post } = useSelector((state) => state.post);
   const dispatch = useDispatch();
@@ -17,20 +20,26 @@ const ReCommentsBox = ({ seq }) => {
   };
   const commentSave = () => {
     dispatch({
-      type: COMMENT_WRITE_REQUEST,
+      type: RECOMMENT_WRITE_REQUEST,
       data: { board_seq: post.seq, contents, comment_seq: seq },
     });
+    setContent("");
   };
 
   return (
-    <Container>
-      <InputBox
-        onChange={getContents}
-        type="text"
-        placeholder="댓글을 입력해주세요"
-      />
-      <InputBoxButton onClick={commentSave}>등록</InputBoxButton>
-    </Container>
+    <>
+      {isOpen ? (
+        <Container>
+          <InputBox
+            value={contents}
+            onChange={getContents}
+            type="text"
+            placeholder="댓글을 입력해주세요"
+          />
+          <InputBoxButton onClick={commentSave}>등록</InputBoxButton>
+        </Container>
+      ) : null}
+    </>
   );
 };
 

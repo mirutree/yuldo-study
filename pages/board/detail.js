@@ -15,9 +15,10 @@ import {
   COMMENT_WRITE_REQUEST,
 } from "../../reducers/comment";
 import ReCommentsBox from "../../components/ReCommentsBox";
+import { BOARD_DETAIL_REQUEST } from "../../reducers/post";
 
 const BasicBoardContent = () => {
-  const [rereplyWrite, setReplyWrite] = useState(null);
+  const [rereSeq, setRereseq] = useState(null);
   const { post } = useSelector((state) => state.post);
   const { comments, commentLoading } = useSelector((state) => state.comment);
 
@@ -38,12 +39,28 @@ const BasicBoardContent = () => {
   }, []);
 
   useEffect(() => {
+    if (!post?.seq) {
+      const board_seq = localStorage.getItem("board_seq");
+      dispatch({
+        type: BOARD_DETAIL_REQUEST,
+        data: board_seq,
+      });
+
+      dispatch({
+        type: COMMENT_LOAD_REQUEST,
+        data: board_seq,
+      });
+    }
+  }, [post]);
+
+  useEffect(() => {
     if (comments) {
       console.log(comments);
     }
   }, [commentLoading]);
+
   const rereply = (comment_seq) => {
-    setReplyWrite(true);
+    setRereseq(comment_seq);
   };
 
   return (
@@ -99,13 +116,13 @@ const BasicBoardContent = () => {
       {comments && (
         <CommentContainer>
           {comments.map((val, index) => (
-            <div key={index + val.ins_dttm}>
+            <div key={index + new Date()}>
               <NickNameContainer>
                 <span onClick={() => rereply(val.seq)}>{val.writer}</span>&nbsp;
                 <span>{val.ins_dttm}</span>
               </NickNameContainer>
               <CommentContentContainer>{val.contents}</CommentContentContainer>
-              {rereplyWrite && <ReCommentsBox seq={val.seq} />}
+              <ReCommentsBox seq={val.seq} isOpen={val.seq == rereSeq} />
             </div>
           ))}
           <CommentsBox />
@@ -217,6 +234,13 @@ const LikeButton = styled.button`
 const DisLikeButton = styled.button`
   border-left: none;
 `;
-const CommentContainer = styled.div``;
-const NickNameContainer = styled.div``;
-const CommentContentContainer = styled.div``;
+const CommentContainer = styled.div`
+  margin: 20px 10px;
+`;
+const NickNameContainer = styled.div`
+  margin: 10px;
+`;
+const CommentContentContainer = styled.div`
+  margin: 10px;
+  border-bottom: 1px solid grey;
+`;
