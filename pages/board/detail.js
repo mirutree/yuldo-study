@@ -15,12 +15,13 @@ import {
   COMMENT_WRITE_REQUEST,
 } from "../../reducers/comment";
 import ReCommentsBox from "../../components/ReCommentsBox";
-import { BOARD_DETAIL_REQUEST } from "../../reducers/post";
+import {BOARD_DETAIL_REQUEST, DISLIKE_UPDATE_REQUEST, LIKE_UPDATE_REQUEST} from "../../reducers/post";
 
 const BasicBoardContent = () => {
   const [rereSeq, setRereseq] = useState(null);
   const { post } = useSelector((state) => state.post);
   const { comments, commentLoading } = useSelector((state) => state.comment);
+  const { isLogIn, user } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -63,6 +64,32 @@ const BasicBoardContent = () => {
     setRereseq(comment_seq);
   };
 
+  const likeUpdate = () => {
+    if (isLogIn) {
+      const isLike = post.Liker.filter((v) => v.user_seq === user.seq);
+      //console.log('is_like', isLike);
+      if (isLike?.length > 0) {
+        return alert('이미 좋아요 하셨습니다');
+      }
+      const board_seq = localStorage.getItem("board_seq");
+      dispatch({
+        type: LIKE_UPDATE_REQUEST,
+        data: {user_seq : user?.seq, board_seq}
+      })
+    }
+  };
+
+  const dislikeUpdate = () => {
+    if (isLogIn) {
+      const board_seq = localStorage.getItem("board_seq");
+      dispatch({
+        type: DISLIKE_UPDATE_REQUEST,
+        data: user?.seq
+      })
+    }
+
+  };
+
   return (
     <Container>
       <TitleContainer>
@@ -74,7 +101,7 @@ const BasicBoardContent = () => {
       </TitleContainer>
       <TitleBottomContainer>
         <Writer>{post.writer}</Writer>
-        <WriteDate>{post.ins_dttm}</WriteDate>
+        <WriteDate>{post.ins_dttm_fm}</WriteDate>
         <TitleBottomButtons>
           <CommentCount>
             <CommentImg />
@@ -102,12 +129,12 @@ const BasicBoardContent = () => {
         <Contents>{post.contents}</Contents>
       </ContentsContainer>
       <ContentsBottomContainer>
-        <LikeButton>
+        <LikeButton onClick={() => likeUpdate()}>
           <LikeImg />
           좋아요
           <span>{post.b_like}</span>
         </LikeButton>
-        <DisLikeButton>
+        <DisLikeButton onClick={() => dislikeUpdate()}>
           <LikeImg />
           별로요
           <span>{post.b_dislike}</span>

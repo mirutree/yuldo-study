@@ -59,16 +59,15 @@ const BasicBoard = () => {
         <ContentsContainer>
           {contents
             ? contents.map((item, index) => (
-                <div key={index + item.ins_dttm}>
-                  <CategoryContent>{item.category}</CategoryContent>
+                <ContentsWrapper key={index + item.ins_dttm}>
+                  <CategoryContent color={item.color}>{item.category}</CategoryContent>
                   <TitleContent onClick={() => goDetail(item.seq)}>
                     {item.title}
-                    {/* 댓글 달 때 코멘트 카운트 올리기 */}
                     <span>[{item.comments_cnt}]</span>
                   </TitleContent>
-                  <IconContent>{item.ins_dttm}</IconContent>
+                  <IconContent>{item.ins_dttm_fm}</IconContent>
                   <IconContent>{item.b_like}</IconContent>
-                </div>
+                </ContentsWrapper>
               ))
             : "내용이 없습니다."}
         </ContentsContainer>
@@ -107,6 +106,9 @@ const IconContainer = styled.div`
 const CategoryContent = styled.div`
   width: 150px;
   padding-left: 30px;
+  display: flex;
+  align-items: center;
+  color: ${props=> props.color};
 `;
 
 const TitleContent = styled.div`
@@ -124,12 +126,18 @@ const IconContent = styled.div`
   width: 150px;
   display: flex;
   justify-content: center;
+  align-items: center;
 `;
 
 const ContentsContainer = styled.div`
   div {
-    display: flex;
+    
   }
+`;
+
+const ContentsWrapper = styled.div`
+  display: flex;
+  border-bottom: 1px solid #EBECF1;
 `;
 
 const Spinner = styled(Oval)`

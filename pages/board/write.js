@@ -40,7 +40,7 @@ const BoardWrite = () => {
     const { name, value } = e.target;
     setCategory(value);
   };
-  
+
   const save = () => {
     dispatch({
       type: BOARD_WRITE_REQUEST,
@@ -65,6 +65,8 @@ const BoardWrite = () => {
             //for loop 으로 변경
             <option value="H">유머</option>
             <option value="I">이슈</option>
+            <option value="S">공포/오컬트</option>
+            <option value="R">정보</option>
           </SelecetBox>
           <div>
             <Smile />
