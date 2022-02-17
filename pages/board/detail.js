@@ -74,17 +74,22 @@ const BasicBoardContent = () => {
       const board_seq = localStorage.getItem("board_seq");
       dispatch({
         type: LIKE_UPDATE_REQUEST,
-        data: {user_seq : user?.seq, board_seq}
+        data: {board_seq}
       })
     }
   };
 
   const dislikeUpdate = () => {
     if (isLogIn) {
+      const isLike = post.DisLiker.filter((v) => v.user_seq === user.seq);
+      //console.log('is_like', isLike);
+      if (isLike?.length > 0) {
+        return alert('이미 싫어요 하셨습니다');
+      }
       const board_seq = localStorage.getItem("board_seq");
       dispatch({
         type: DISLIKE_UPDATE_REQUEST,
-        data: user?.seq
+        data: {user_seq : user?.seq, board_seq}
       })
     }
 
