@@ -5,7 +5,8 @@ const initialState = {
   user: {
     seq: null,
     id: null,
-    nickname: null
+    nickname: null,
+    token : null
   },
   isLogIn: false,
   isLoading : false
@@ -54,7 +55,8 @@ const reducer = (state = initialState, action) =>
       case LOGIN_USER_SUCCESS:
         draft.isLoadig = false;
         draft.isLogIn = true;
-        draft.user = userData;
+        draft.user = action.data.data.user;
+        draft.user.token = action.data.data.token;
         break;
       case LOGIN_USER_FAILURE:
         draft.isLoadig = false;

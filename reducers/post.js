@@ -1,5 +1,6 @@
-import produce from "../util/produce";
+import produce from "../util/produce"; // immer 패키지가 들어있는 produce를 가져온다
 
+// state의 초기값 정의
 const initialState = {
   Posts: [],
   post: {
@@ -11,7 +12,8 @@ const initialState = {
     category: null,
     comment_count: null,
     like: null,
-    Liker : []
+    Liker : [],
+    DisLiker : []
   },
   Comment: [],
   User: [],
@@ -44,7 +46,7 @@ export const DISLIKE_UPDATE_FAILURE = "DISLIKE_UPDATE_FAILURE";
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
-      case BOARD_ALL_REQUEST:
+      case BOARD_ALL_REQUEST: // BOARD_ALL_REQUEST액션이 실행되면
         draft.isLoading = true;
         break;
       case BOARD_ALL_SUCCESS:
@@ -96,6 +98,9 @@ const reducer = (state = initialState, action) =>
         draft.isSuccess = true;
         draft.post = action.data;
         draft.post.Liker = action.liker;
+        //console.log('action.liker',action.liker);
+        //sconsole.log(action.disLiker);
+        draft.post.DisLiker = action.disLiker;
         draft.message = "";
         break;
       case BOARD_DETAIL_FAILURE:
@@ -119,6 +124,7 @@ const reducer = (state = initialState, action) =>
         break;
       case DISLIKE_UPDATE_SUCCESS:
         draft.post.b_dislike = state.post.b_dislike + 1;
+        draft.post.DisLiker.push({ user_seq: action.data.user_seq});
         break;
       case DISLIKE_UPDATE_FAILURE:
 
